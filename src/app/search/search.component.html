@@ -22,7 +22,9 @@
 <div *ngIf="results.length > 0">
   <h2>Search Results:</h2>
   <ul>
-    <li id="{{ item.id }}" *ngFor="let item of results">{{ item.name }}</li>
+    <li id="{{ item.id }}" *ngFor="let item of results">
+      <a [routerLink]="['/details', item.id]">{{ item.name }}</a>
+    </li>
   </ul>
 </div>
 
