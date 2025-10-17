@@ -1,6 +1,30 @@
 <div>
-    Implement details in this component.
+  Implement details in this component.
 </div>
 <p>
-    Implement search in the <a [routerLink]="['/']">search component</a>
+  Implement search in the <a [routerLink]="['/']">search component</a>
 </p>
+<hr />
+<a [routerLink]="['/']">Back to search results</a>
+
+<div *ngIf="!detail">
+  <p>Loading details...</p>
+</div>
+
+<div *ngIf="detail && detail.name">
+  <h2>{{ detail.name }}</h2>
+  <p>Favorite Color: {{ detail.favorite_color }}</p>
+
+
+  <ul>
+    <li *ngFor="let quote of getSortedQuotes()">
+      <p>{{ quote[1] }}</p>
+      <p>{{ quote[0] }} Likes</p>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="detail && !detail.name">
+  <h2>Opps!</h2>
+  <p>Something went wrong!</p>
+</div>
