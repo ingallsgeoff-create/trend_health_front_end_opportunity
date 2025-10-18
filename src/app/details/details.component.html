@@ -7,38 +7,44 @@
 </div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-12 mb-5">
-      <a [routerLink]="['/']">Back to search results</a>
-    </div>
-    <div class="col-12">
-      <div *ngIf="!detail && !error">
-        <p>Loading details...</p>
-      </div>
-    </div>
-    <div class="col-12">
-      <div *ngIf="error">
-        <h2>Opps!</h2>
-        <p>Something went wrong! Please try again or contact your system administrator</p>
-        <div *ngIf="shared.verbalErrorLogging">
-          <pre>{{ error | json }}</pre>
-        </div>
-      </div>
-    </div>
-    <div class="col-12">
-      <div *ngIf="detail && detail.name">
-        <h1>{{ detail.name }}</h1>
-        <p class="lead">Favorite Color: {{ detail.favorite_color | capitalize }}</p>
 
-        <div *ngFor="let quote of getSortedQuotes()">
-          <blockquote class="blockquote">
-            <p>"{{ quote[1] }}"</p>
-          </blockquote>
-          <figcaption class="blockquote-footer">
-            {{ quote[0] }} Likes
-          </figcaption>
+  <div class="card">
+    <div class="card-header">
+      <h1 class="no-und m-0"><span class="color-secondary">Advent</span> Person Details</h1>
+      <div class="col-12 mt-2">
+        <a [routerLink]="['/']">Back to search results</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12" *ngIf="!detail && !error">
+          <p>Loading details...</p>
+        </div>
+
+        <div class="col-12" *ngIf="error">
+          <h2 class="mt-1">Opps!</h2>
+          <p>Something went wrong! Please try again or contact your system administrator</p>
+          <div *ngIf="shared.verboseErrorLogging">
+            <pre>{{ error | json }}</pre>
+          </div>
+        </div>
+
+        <div class="col-12" *ngIf="detail && detail.name">
+          <h2 class="mt-1">{{ detail.name }}</h2>
+          <p class="lead">Favorite Color: {{ detail.favorite_color | capitalize }}</p>
+
+          <div *ngFor="let quote of getSortedQuotes()">
+            <blockquote class="blockquote">
+              <p>"{{ quote[1] }}"</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+              {{ quote[0] }} Likes
+            </figcaption>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="card-footer">
     </div>
   </div>
 </div>

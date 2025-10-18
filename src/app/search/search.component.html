@@ -7,66 +7,75 @@
 </div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h1 class="visually-hidden">Person Search</h1>
-    </div>
-  </div>
-  <form (ngSubmit)="onSearch()" class="row">
 
-    <div class="col-4">
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="searchParams.term" (keyup.enter)="onSearch()" class="form-control" name="term" title="Term" placeholder="Search Term" id="searchTerm" type="text" aria-label="Search Term"
-          aria-labelledby="searchTermLabel">
-        <label class="form-label" for="searchTerm" id="searchTermLabel">Search Term</label>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h1 class="no-und m-0"><span class="color-secondary">Advent</span> Person Search</h1>
     </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSearch()" class="row">
 
-    <div class="col-4">
-      <div class="form-floating">
-        <select [(ngModel)]="searchParams.color" class="form-control" title="Color" id="searchColor" type="select" aria-labelledby="searchColorLabel" aria-label="Select a Color" name="color" required>
-          <option value="blue">Blue</option>
-          <option value="red">Red</option>
-          <option value="green">Green</option>
-        </select>
-        <label class="form-label" for="searchColor" id="searchColorLabel">Select a Color</label>
-      </div>
-    </div>
+        <div class="col-4">
+          <div class="form-floating mb-3">
+            <input [(ngModel)]="searchParams.term" (keyup.enter)="onSearch()" class="form-control" name="term" title="Term" placeholder="Search Term" id="searchTerm" type="text"
+              aria-label="Search Term" aria-labelledby="searchTermLabel">
+            <label class="form-label" for="searchTerm" id="searchTermLabel">Search Term</label>
+          </div>
+        </div>
 
-    <div class="col-4">
-      <button (click)="onSearch()" class="btn btn-xlg col-12 btn-primary">Search</button>
-    </div>
+        <div class="col-4">
+          <div class="form-floating">
+            <select [(ngModel)]="searchParams.color" class="form-control" title="Color" id="searchColor" type="select" aria-labelledby="searchColorLabel" aria-label="Select a Color" name="color"
+              required>
+              <option value="blue">Blue</option>
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+            </select>
+            <label class="form-label" for="searchColor" id="searchColorLabel">Select a Color</label>
+          </div>
+        </div>
 
-  </form>
-  <div class="row">
-    <div class="col-12">
-      <h2>Search Results</h2>
-    </div>
-    <div class="col-12">
-      <div *ngIf="error">
-        <h3>Opps!</h3>
-        <p>Something went wrong! Please try again or contact your system administrator</p>
-        <div *ngIf="shared.verbalErrorLogging">
-          <pre>{{ error | json }}</pre>
+        <div class="col-4">
+          <button (click)="onSearch()" class="btn btn-xlg col-12 btn-primary">Search</button>
+        </div>
+
+      </form>
+
+      <hr />
+
+      <div class="row">
+        <div class="col-12">
+          <h2 class="mt-1">Search Results</h2>
+        </div>
+        <div class="col-12">
+          <div *ngIf="error">
+            <h3>Opps!</h3>
+            <p>Something went wrong! Please try again or contact your system administrator</p>
+            <div *ngIf="shared.verboseErrorLogging">
+              <pre>{{ error | json }}</pre>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 text-center">
+          <div *ngIf="results === null && !error">
+            <p>Search for people</p>
+          </div>
+          <div *ngIf="results?.length === 0 && !error">
+            <p>Enter a Search Term or select a Color</p>
+          </div>
+        </div>
+        <div class="col-12">
+          <div *ngIf="results.length > 0">
+            <ul class="row g-3">
+              <li class="col-3 text-center" id="{{ item.id }}" *ngFor="let item of results">
+                <a [routerLink]="['/details', item.id]" (click)="saveResultsToSession()">{{ item.name }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-12 text-center">
-      <div *ngIf="results === null && !error">
-        <p>Search for people</p>
-      </div>
-      <div *ngIf="results?.length === 0 && !error">
-        <p>Enter a Search Term or select a Color</p>
-      </div>
-    </div>
-    <div class="col-12">
-      <div *ngIf="results.length > 0">
-        <ul class="row g-3">
-          <li class="col-3 text-center" id="{{ item.id }}" *ngFor="let item of results">
-            <a [routerLink]="['/details', item.id]" (click)="saveResultsToSession()">{{ item.name }}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+
+    <div class="card-footer"></div>
   </div>
 </div>

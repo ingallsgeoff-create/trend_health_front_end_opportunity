@@ -4,5 +4,5 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SharedService {
-  public verbalErrorLogging: boolean = false;
+  public verboseErrorLogging: boolean = false;
 }

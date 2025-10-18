@@ -12,7 +12,14 @@ export class AppComponent {
 
   constructor(private shared: SharedService) { }
 
-  updateValue(bol: boolean) {
-    this.shared.verbalErrorLogging = bol;
+  ngOnInit() {
+    const yearEl = document.getElementById("year");
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear().toString();
+    }
+  };
+
+  updateValue(bol: boolean): void {
+    this.shared.verboseErrorLogging = bol;
   }
 }

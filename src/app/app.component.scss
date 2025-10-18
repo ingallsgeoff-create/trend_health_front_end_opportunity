@@ -1,6 +1,6 @@
 @use './styles/foundation/index' as *;
 
-.toolbar {
+header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,5 +19,50 @@
 }
 
 .content {
-  margin: 25px 35px;
+  padding: 25px 35px;
+  position: relative;
+  z-index: 10;
+}
+
+.app-body {
+  min-height: calc(100vh - 216px);
+  position: relative;
+  z-index: 0;
+  background-color: $primary;
+  background: $primary;
+  background: -moz-linear-gradient(-45deg, $primary 0%, $secondary 100%);
+  background: -webkit-linear-gradient(-45deg, $primary 0%, $secondary 100%);
+  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+
+  .app-bg {
+    opacity: 20%;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: url(../assets/theme/advent_hp/bg-pattern.svg);
+    background-size: 3%;
+    background-repeat: repeat;
+  }
+}
+
+footer {
+  background-color: $darkGrey;
+  min-height: 100px;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+
+  >.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .site-stamp {
+    color: $white;
+  }
 }

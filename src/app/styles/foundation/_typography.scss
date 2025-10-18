@@ -18,6 +18,10 @@ h1 {
   border-bottom: 2px solid #eaeaea;
   padding-bottom: 0.3rem;
   color: $primary;
+
+  &.no-und {
+    border-bottom-width: 0;
+  }
 }
 
 h2 {
