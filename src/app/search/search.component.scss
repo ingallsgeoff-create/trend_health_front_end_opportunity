@@ -1,0 +1,48 @@
+@use '../styles/foundation/index' as *;
+@use '../styles/core';
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    a {
+      padding: 50px 20px;
+      display: block;
+      background-color: $primary;
+      color: $white;
+      text-decoration: none;
+      position: relative;
+      transition: background-color 0.3s ease;
+      overflow: hidden;
+      border-radius: 15px 0 0;
+
+      &::before,
+      .corner::before {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background-color: $secondary;
+        transition: all 0.3s ease;
+        transform: rotate(45deg);
+      }
+
+      &::before {
+        top: -165px;
+        left: -165px;
+      }
+
+      .corner::before {
+        bottom: 0;
+        left: 0;
+      }
+
+      &:hover::before {
+        top: -85px;
+        left: -85px;
+      }
+    }
+  }
+}

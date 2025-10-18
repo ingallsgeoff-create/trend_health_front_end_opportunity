@@ -1,36 +1,55 @@
-<p>
-  Implement search in this component
-</p>
-<p>
-  Implement details in the <a [routerLink]="['/details/2']">details component</a>
-</p>
-<hr />
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="visually-hidden">Person Search</h1>
+    </div>
+  </div>
+  <form (ngSubmit)="onSearch()" class="row">
 
+    <div class="col-4">
+      <div class="form-floating mb-3">
+        <input [(ngModel)]="searchParams.term" (keyup.enter)="onSearch()" class="form-control" name="term" title="Term" placeholder="Search Term" id="searchTerm" type="text" aria-label="Search Term"
+          aria-labelledby="searchTermLabel">
+        <label class="form-label" for="searchTerm" id="searchTermLabel">Search Term</label>
+      </div>
+    </div>
 
-<input [(ngModel)]="searchParams.term" placeholder="Search term">
+    <div class="col-4">
+      <div class="form-floating">
+        <select [(ngModel)]="searchParams.color" class="form-control" title="Color" id="searchColor" type="select" aria-labelledby="searchColorLabel" aria-label="Select a Color" name="color" required>
+          <option value="blue">Blue</option>
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+        </select>
+        <label class="form-label" for="searchColor" id="searchColorLabel">Select a Color</label>
+      </div>
+    </div>
 
-<select [(ngModel)]="searchParams.color">
-  <option value="" disabled selected>Select a color</option>
-  <option value="blue">Blue</option>
-  <option value="red">Red</option>
-  <option value="green">Green</option>
-</select>
+    <div class="col-4">
+      <button (click)="onSearch()" class="btn btn-primary">Search</button>
+    </div>
 
-<button (click)="onSearch()">Search</button>
-
-<div *ngIf="results === null">
-  <p>Search for people</p>
-</div>
-
-<div *ngIf="results.length > 0">
-  <h2>Search Results:</h2>
-  <ul>
-    <li id="{{ item.id }}" *ngFor="let item of results">
-      <a [routerLink]="['/details', item.id]" (click)="saveResultsToSession()">{{ item.name }}</a>
-    </li>
-  </ul>
-</div>
-
-<div *ngIf="results?.length === 0">
-  <p>No results yet. Try a search!</p>
+  </form>
+  <div class="row">
+    <div class="col-12">
+      <h2>Search Results</h2>
+    </div>
+    <div class="col-12 text-center">
+      <div *ngIf="results === null">
+        <p>Search for people</p>
+      </div>
+      <div *ngIf="results?.length === 0">
+        <p>Enter a Search Term or select a Color</p>
+      </div>
+    </div>
+    <div class="col-12">
+      <div *ngIf="results.length > 0">
+        <ul class="row g-3">
+          <li class="col-3 text-center" id="{{ item.id }}" *ngFor="let item of results">
+            <a [routerLink]="['/details', item.id]" (click)="saveResultsToSession()">{{ item.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

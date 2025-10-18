@@ -22,6 +22,7 @@ export class SearchComponent implements OnInit {
   };
 
   results: any[] = [];
+  formValid: boolean | null = null;
 
   private apiUrl = 'http://localhost:5001/search';
   private storageKey = 'searchResults';
@@ -46,7 +47,7 @@ export class SearchComponent implements OnInit {
       }
     } else {
       this.results = [];
-      this.searchParams = { term: '', color: '' };
+      this.searchParams = { term: '', color: 'blue' };
     }
   }
 
@@ -65,11 +66,13 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.formValid = true;
+
     sessionStorage.removeItem(this.storageKey);
     sessionStorage.removeItem(this.paramsKey);
     this.getSearchResults(this.searchParams).subscribe({
       next: (data) => {
-        this.results = Array.isArray(data.matches) ? data.matches : [data.matches]; // Ensure consistent display
+        this.results = Array.isArray(data.matches) ? data.matches : [data.matches];
       },
       error: (err) => {
         console.error('Error:', err);

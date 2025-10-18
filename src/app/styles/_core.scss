@@ -1,0 +1,18 @@
+@use './foundation/index' as *;
+
+@use './foundation/typography';
+@use './foundation/buttons';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box
+}
+
+.visually-hidden {
+  display: none;
+}
+
+.align-middle {
+  vertical-align: middle !important;
+}
