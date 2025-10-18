@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SharedService } from '../shared/shared.service';
 
 
 interface SearchParams {
@@ -23,14 +24,17 @@ export class SearchComponent implements OnInit {
 
   results: any[] = [];
   formValid: boolean | null = null;
-  error: boolean = false;
+  error: string | null = null;
   loader: boolean = false;
 
   private apiUrl = 'http://localhost:5001/search';
   private storageKey = 'searchResults';
   private paramsKey = 'searchParams';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    public shared: SharedService
+  ) { }
 
   ngOnInit() {
     const storedResults = sessionStorage.getItem(this.storageKey);
@@ -78,11 +82,12 @@ export class SearchComponent implements OnInit {
       next: (data) => {
         this.results = Array.isArray(data.matches) ? data.matches : [data.matches];
         this.loader = false;
+        this.error = null;
       },
       error: (err) => {
         console.error('Error:', err);
         this.results = [];
-        this.error = true;
+        this.error = err;
         this.loader = false;
       }
     });

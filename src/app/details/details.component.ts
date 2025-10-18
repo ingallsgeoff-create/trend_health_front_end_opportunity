@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { SharedService } from '../shared/shared.service';
 
 interface DetailResponse {
   id: number;
@@ -18,13 +19,14 @@ interface DetailResponse {
 export class DetailsComponent implements OnInit {
 
   detail: DetailResponse | null = null;
-  error: boolean = false;
+  error: string | null = null;
   loader: boolean = false;
   private apiUrl = 'http://localhost:5001/details/';
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    public shared: SharedService
   ) { }
 
   ngOnInit(): void {
@@ -40,12 +42,12 @@ export class DetailsComponent implements OnInit {
       next: (data) => {
         console.log('Details loaded:', data);
         this.detail = data;
-        this.error = false;
+        this.error = null;
         this.loader = false;
       },
       error: (err) => {
         console.error('Error fetching details:', err);
-        this.error = true;
+        this.error = err;
         this.loader = false;
       }
     });

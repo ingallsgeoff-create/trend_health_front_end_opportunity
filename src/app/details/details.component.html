@@ -20,6 +20,9 @@
       <div *ngIf="error">
         <h2>Opps!</h2>
         <p>Something went wrong! Please try again or contact your system administrator</p>
+        <div *ngIf="shared.verbalErrorLogging">
+          <pre>{{ error | json }}</pre>
+        </div>
       </div>
     </div>
     <div class="col-12">
