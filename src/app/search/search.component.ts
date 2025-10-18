@@ -23,6 +23,8 @@ export class SearchComponent implements OnInit {
 
   results: any[] = [];
   formValid: boolean | null = null;
+  error: boolean = false;
+  loader: boolean = false;
 
   private apiUrl = 'http://localhost:5001/search';
   private storageKey = 'searchResults';
@@ -38,12 +40,13 @@ export class SearchComponent implements OnInit {
       try {
         this.results = JSON.parse(storedResults);
         this.searchParams = JSON.parse(storedParams);
-        console.log('Loaded search state from session storage:', this.results, this.searchParams);
 
         sessionStorage.removeItem(this.storageKey);
         sessionStorage.removeItem(this.paramsKey);
       } catch (e) {
         console.error('Failed to parse stored session data:', e);
+        this.results = [];
+        this.searchParams = { term: '', color: 'blue' };
       }
     } else {
       this.results = [];
@@ -66,6 +69,7 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.loader = true;
     this.formValid = true;
 
     sessionStorage.removeItem(this.storageKey);
@@ -73,10 +77,13 @@ export class SearchComponent implements OnInit {
     this.getSearchResults(this.searchParams).subscribe({
       next: (data) => {
         this.results = Array.isArray(data.matches) ? data.matches : [data.matches];
+        this.loader = false;
       },
       error: (err) => {
         console.error('Error:', err);
         this.results = [];
+        this.error = true;
+        this.loader = false;
       }
     });
   }

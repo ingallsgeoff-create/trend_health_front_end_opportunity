@@ -1,32 +1,41 @@
-<div>
-  Implement details in this component.
-</div>
-<p>
-  Implement search in the <a [routerLink]="['/']">search component</a>
-</p>
-<hr />
-
-
-<a [routerLink]="['/']">Back to search results</a>
-
-<div *ngIf="!detail">
-  <p>Loading details...</p>
+<div class="loader-modal" [ngClass]="{ 'show': loader }">
+  <div class="loader-inner">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 </div>
 
-<div *ngIf="detail && detail.name">
-  <h2>{{ detail.name }}</h2>
-  <p>Favorite Color: {{ detail.favorite_color }}</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mb-5">
+      <a [routerLink]="['/']">Back to search results</a>
+    </div>
+    <div class="col-12">
+      <div *ngIf="!detail && !error">
+        <p>Loading details...</p>
+      </div>
+    </div>
+    <div class="col-12">
+      <div *ngIf="error">
+        <h2>Opps!</h2>
+        <p>Something went wrong! Please try again or contact your system administrator</p>
+      </div>
+    </div>
+    <div class="col-12">
+      <div *ngIf="detail && detail.name">
+        <h1>{{ detail.name }}</h1>
+        <p class="lead">Favorite Color: {{ detail.favorite_color | capitalize }}</p>
 
-
-  <ul>
-    <li *ngFor="let quote of getSortedQuotes()">
-      <p>{{ quote[1] }}</p>
-      <p>{{ quote[0] }} Likes</p>
-    </li>
-  </ul>
-</div>
-
-<div *ngIf="detail && !detail.name">
-  <h2>Opps!</h2>
-  <p>Something went wrong!</p>
+        <div *ngFor="let quote of getSortedQuotes()">
+          <blockquote class="blockquote">
+            <p>"{{ quote[1] }}"</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            {{ quote[0] }} Likes
+          </figcaption>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

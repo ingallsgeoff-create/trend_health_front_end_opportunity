@@ -18,6 +18,8 @@ interface DetailResponse {
 export class DetailsComponent implements OnInit {
 
   detail: DetailResponse | null = null;
+  error: boolean = false;
+  loader: boolean = false;
   private apiUrl = 'http://localhost:5001/details/';
 
   constructor(
@@ -33,12 +35,19 @@ export class DetailsComponent implements OnInit {
   }
 
   fetchDetails(id: string): void {
+    this.loader = true;
     this.http.get<DetailResponse>(`${this.apiUrl}${id}`).subscribe({
       next: (data) => {
         console.log('Details loaded:', data);
         this.detail = data;
+        this.error = false;
+        this.loader = false;
       },
-      error: (err) => console.error('Error fetching details:', err)
+      error: (err) => {
+        console.error('Error fetching details:', err);
+        this.error = true;
+        this.loader = false;
+      }
     });
   }
 

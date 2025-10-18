@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { CapitalizePipe } from './shared/pipes/capitalize.pipe';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     SearchComponent,
-    DetailsComponent
+    DetailsComponent,
+    CapitalizePipe
   ],
   imports: [
     BrowserModule,
