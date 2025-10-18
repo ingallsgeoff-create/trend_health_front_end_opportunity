@@ -21,15 +21,33 @@ export class SearchComponent implements OnInit {
     color: null
   };
 
-  results: any[] | null = null;
+  results: any[] = [];
 
   private apiUrl = 'http://localhost:5001/search';
+  private storageKey = 'searchResults';
+  private paramsKey = 'searchParams';
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.searchParams.color = '';
-    this.searchParams.term = '';
+    const storedResults = sessionStorage.getItem(this.storageKey);
+    const storedParams = sessionStorage.getItem(this.paramsKey);
+
+    if (storedResults && storedParams) {
+      try {
+        this.results = JSON.parse(storedResults);
+        this.searchParams = JSON.parse(storedParams);
+        console.log('Loaded search state from session storage:', this.results, this.searchParams);
+
+        sessionStorage.removeItem(this.storageKey);
+        sessionStorage.removeItem(this.paramsKey);
+      } catch (e) {
+        console.error('Failed to parse stored session data:', e);
+      }
+    } else {
+      this.results = [];
+      this.searchParams = { term: '', color: '' };
+    }
   }
 
   getSearchResults(paramsObj: SearchParams): Observable<any> {
@@ -47,7 +65,8 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(): void {
-    console.log('getSearchResults Called', this.searchParams);
+    sessionStorage.removeItem(this.storageKey);
+    sessionStorage.removeItem(this.paramsKey);
     this.getSearchResults(this.searchParams).subscribe({
       next: (data) => {
         this.results = Array.isArray(data.matches) ? data.matches : [data.matches]; // Ensure consistent display
@@ -57,5 +76,13 @@ export class SearchComponent implements OnInit {
         this.results = [];
       }
     });
+  }
+
+  saveResultsToSession(): void {
+    if (this.results) {
+      sessionStorage.setItem(this.storageKey, JSON.stringify(this.results));
+      sessionStorage.setItem(this.paramsKey, JSON.stringify(this.searchParams));
+      console.log('Results and params saved to session storage');
+    }
   }
 }
