@@ -1,16 +1,38 @@
-<div class="toolbar" role="banner">
-  <a [routerLink]="['/']">
-    <img
-      alt="Advent Logo"
-      src="./assets/logo.png"
-    />
-  </a>
+<header class="toolbar" role="banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg navbar-dark" id="main">
+          <a [routerLink]="['/']">
+            <img alt="Advent Logo" src="./assets/logo.png" />
+          </a>
+          <ul class="navbar-nav ms-5">
+            <li class="nav-item">
+              <a id="search" class="nav-link active" [routerLink]="['/']">Advent Person Search</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
   <span>Frontend Candidate Project</span>
+</header>
+
+<div class="app-body">
+  <div class="app-bg"></div>
+  <div class="content" role="main">
+    <router-outlet></router-outlet>
+  </div>
 </div>
 
-<div class="content" role="main">
-  <router-outlet></router-outlet>
-</div>
-
-
-
+<footer class="align-middle text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p class="site-stamp m-0">
+          <span id="year"></span> Advent Health Partners. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

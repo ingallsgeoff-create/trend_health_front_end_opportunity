@@ -1,0 +1,40 @@
+@use './foundation/index' as *;
+
+@use './foundation/typography';
+@use './foundation/buttons';
+
+.loader-modal {
+  position: fixed;
+  top: 100px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(#333, .75);
+  opacity: 0;
+  z-index: -1;
+  transition: all .35s linear;
+
+  .loader-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .spinner-border {
+      color: $secondary;
+      font-size: 40px;
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  &.show {
+    transition: opacity .35s linear;
+    z-index: 10;
+    opacity: 1;
+  }
+}
+
+.color-secondary {
+  color: $secondary;
+}
