@@ -4,8 +4,8 @@ import { DetailsComponent } from './details/details.component';
 import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
-  { path: '', component: SearchComponent, title: 'Person Search | Frontend Candidate' },
-  { path: 'details/:id', component: DetailsComponent, title: 'Person Details | Frontend Candidate' }
+  { path: '', component: SearchComponent },
+  { path: 'details/:id', component: DetailsComponent }
 ];
 
 @NgModule({

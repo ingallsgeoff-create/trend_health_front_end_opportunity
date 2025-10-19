@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { SharedService } from '../shared/shared.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 interface DetailResponse {
   id: number;
@@ -26,6 +27,8 @@ export class DetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
+    private meta: Meta,
+    private title: Title,
     public shared: SharedService
   ) { }
 
@@ -34,6 +37,8 @@ export class DetailsComponent implements OnInit {
     if (id) {
       this.fetchDetails(id);
     }
+
+    this.title.setTitle('Person Details | Frontend Candidate');
   }
 
   fetchDetails(id: string): void {
@@ -44,6 +49,15 @@ export class DetailsComponent implements OnInit {
         this.detail = data;
         this.error = null;
         this.loader = false;
+        this.meta.updateTag({
+          name: 'description',
+          content: `Discover detailed information about ${data.name}, including their favorite color (${data.favorite_color}), and top-rated quotes ranked by likes.`
+        });
+
+        this.meta.updateTag({
+          name: 'keywords',
+          content: 'profile details, favorite color, popular quotes, character quotes, top liked quotes, quote rankings, most liked sayings, motivational quotes'
+        });
       },
       error: (err) => {
         console.error('Error fetching details:', err);

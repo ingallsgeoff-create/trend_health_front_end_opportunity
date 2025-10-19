@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { SharedService } from '../shared/shared.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { Meta, Title } from '@angular/platform-browser';
 
 
 interface SearchParams {
@@ -35,6 +36,8 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private meta: Meta,
+    private title: Title,
     public shared: SharedService
   ) { }
 
@@ -55,6 +58,18 @@ export class SearchComponent implements OnInit {
       this.results$ = of([]); // return an empty array to keep template happy
       this.searchParams = { term: '', color: 'blue' };
     }
+
+    this.title.setTitle('Person Search | Frontend Candidate');
+
+    this.meta.updateTag({
+      name: 'description',
+      content: 'Search and explore user profiles, filter by favorite color or keyword, and instantly discover the most popular quotes in our collection.'
+    });
+
+    this.meta.updateTag({
+      name: 'keywords',
+      content: 'search profiles, character search, favorite color filter, keyword search, user discovery, color-based search, user explorer'
+    });
   }
 
   getSearchResults(paramsObj: SearchParams): Observable<any> {
