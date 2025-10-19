@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { SharedService } from '../shared/shared.service';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 
 interface SearchParams {
@@ -22,10 +23,11 @@ export class SearchComponent implements OnInit {
     color: null
   };
 
-  results: any[] = [];
+  searchTrigger: boolean = false;
   formValid: boolean | null = null;
   error: string | null = null;
   loader: boolean = false;
+  results$: Observable<any[]> = of([]);
 
   private apiUrl = 'http://localhost:5001/search';
   private storageKey = 'searchResults';
@@ -42,18 +44,15 @@ export class SearchComponent implements OnInit {
 
     if (storedResults && storedParams) {
       try {
-        this.results = JSON.parse(storedResults);
+        this.results$ = of(JSON.parse(storedResults));
         this.searchParams = JSON.parse(storedParams);
-
-        sessionStorage.removeItem(this.storageKey);
-        sessionStorage.removeItem(this.paramsKey);
       } catch (e) {
         console.error('Failed to parse stored session data:', e);
-        this.results = [];
+        this.results$ = of([]); // return an empty array to keep template happy
         this.searchParams = { term: '', color: 'blue' };
       }
     } else {
-      this.results = [];
+      this.results$ = of([]); // return an empty array to keep template happy
       this.searchParams = { term: '', color: 'blue' };
     }
   }
@@ -73,31 +72,25 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(): void {
+    this.error = null;
+    this.searchTrigger = true;
     this.loader = true;
-    this.formValid = true;
 
-    sessionStorage.removeItem(this.storageKey);
-    sessionStorage.removeItem(this.paramsKey);
-    this.getSearchResults(this.searchParams).subscribe({
-      next: (data) => {
-        this.results = Array.isArray(data.matches) ? data.matches : [data.matches];
+    this.results$ = this.getSearchResults(this.searchParams).pipe(
+      map((data) => {
         this.loader = false;
-        this.error = null;
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.results = [];
-        this.error = err;
+        const matches = Array.isArray(data.matches) ? data.matches : [];
+        sessionStorage.setItem(this.storageKey, JSON.stringify(matches));
+        sessionStorage.setItem(this.paramsKey, JSON.stringify(this.searchParams));
+        this.searchTrigger = true;
+        return matches;
+      }),
+      catchError((err) => {
         this.loader = false;
-      }
-    });
-  }
-
-  saveResultsToSession(): void {
-    if (this.results) {
-      sessionStorage.setItem(this.storageKey, JSON.stringify(this.results));
-      sessionStorage.setItem(this.paramsKey, JSON.stringify(this.searchParams));
-      console.log('Results and params saved to session storage');
-    }
+        this.searchTrigger = true;
+        this.error = err.message || 'Search failed';
+        return of([]); // return an empty array to keep template happy
+      })
+    );
   }
 }

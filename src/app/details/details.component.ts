@@ -7,7 +7,7 @@ interface DetailResponse {
   id: number;
   name: string;
   favorite_color: string;
-  quotes: { [likes: string]: string };
+  quotes: { [likes: string]: string[] };
 }
 
 @Component({
@@ -53,12 +53,24 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  getSortedQuotes(): { likes: number; quote: string }[] {
+    if (!this.detail?.quotes) return [];
 
-  getSortedQuotes(): [string, string][] {
-    return this.detail
-      ? Object.entries(this.detail.quotes).sort(
-        ([aLikes], [bLikes]) => Number(bLikes) - Number(aLikes)
-      )
-      : [];
+    // Flatten the structure
+    const quotesArray: { likes: number; quote: string }[] = [];
+
+    for (const [likes, quotes] of Object.entries(this.detail.quotes)) {
+      if (Array.isArray(quotes)) {
+        quotes.forEach(q => quotesArray.push({ likes: Number(likes), quote: q }));
+      }
+    }
+
+    // Sort by likes DESC, then quote alphabetically ASC
+    quotesArray.sort((a, b) => {
+      if (b.likes !== a.likes) return b.likes - a.likes;
+      return a.quote.localeCompare(b.quote);
+    });
+
+    return quotesArray;
   }
 }

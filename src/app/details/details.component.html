@@ -1,6 +1,6 @@
-<div class="loader-modal" [ngClass]="{ 'show': loader }">
+<div class="loader-modal" [ngClass]="{ 'show': loader }" role="status" aria-live="polite">
   <div class="loader-inner">
-    <div class="spinner-border" role="status">
+    <div class="spinner-border" aria-hidden="true">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
@@ -29,16 +29,16 @@
           </div>
         </div>
 
-        <div class="col-12" *ngIf="detail && detail.name">
+        <div class="col-12" *ngIf="detail?.name">
           <h2 class="mt-1">{{ detail.name }}</h2>
           <p class="lead">Favorite Color: {{ detail.favorite_color | capitalize }}</p>
 
-          <div *ngFor="let quote of getSortedQuotes()">
+          <div *ngFor="let quote of detail?.quotes | sortQuotes">
             <blockquote class="blockquote">
-              <p>"{{ quote[1] }}"</p>
+              <p>"{{ quote.quote }}"</p>
             </blockquote>
             <figcaption class="blockquote-footer">
-              {{ quote[0] }} Likes
+              {{ quote.likes | number }} Likes
             </figcaption>
           </div>
         </div>
