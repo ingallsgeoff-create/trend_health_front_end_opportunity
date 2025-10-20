@@ -50,3 +50,16 @@ ul {
 .btn-xlg {
   height: 58px;
 }
+
+.form-error {
+
+  input,
+  select {
+    border-color: $danger;
+  }
+
+  .small {
+    color: $danger;
+    opacity: 1;
+  }
+}

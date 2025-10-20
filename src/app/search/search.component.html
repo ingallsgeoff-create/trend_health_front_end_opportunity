@@ -15,24 +15,27 @@
     <div class="card-body">
       <form (ngSubmit)="onSearch()" class="row">
 
-        <div class="col-4">
-          <div class="form-floating mb-3">
+        <div class="col-4" id="form_termInput">
+          <div class="form-floating mb-1">
             <input [(ngModel)]="searchParams.term" (keyup.enter)="onSearch()" class="form-control" name="term" title="Term" placeholder="Search Term" id="searchTerm" type="text"
-              aria-label="Search Term" aria-labelledby="searchTermLabel">
-            <label class="form-label" for="searchTerm" id="searchTermLabel">Search Term</label>
+              aria-label="Search Name" aria-labelledby="searchTermLabel">
+            <label class="form-label" for="searchTerm" id="searchTermLabel">Search Name</label>
           </div>
+          <div class="small mb-2 fade">Please Enter a Name</div>
         </div>
 
-        <div class="col-4">
-          <div class="form-floating">
+        <div class="col-4" id="form_colorSelect">
+          <div class="form-floating mb-1">
             <select [(ngModel)]="searchParams.color" class="form-control" title="Color" id="searchColor" type="select" aria-labelledby="searchColorLabel" aria-label="Select a Color" name="color"
               required>
+              <option selected value="">Select a Color</option>
               <option value="blue">Blue</option>
               <option value="red">Red</option>
               <option value="green">Green</option>
             </select>
             <label class="form-label" for="searchColor" id="searchColorLabel">Select a Color</label>
           </div>
+          <div class="small fade mb-2">Please Select a Color</div>
         </div>
 
         <div class="col-4">

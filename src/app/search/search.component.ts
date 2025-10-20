@@ -52,11 +52,11 @@ export class SearchComponent implements OnInit {
       } catch (e) {
         console.error('Failed to parse stored session data:', e);
         this.results$ = of([]); // return an empty array to keep template happy
-        this.searchParams = { term: '', color: 'blue' };
+        this.searchParams = { term: '', color: '' };
       }
     } else {
       this.results$ = of([]); // return an empty array to keep template happy
-      this.searchParams = { term: '', color: 'blue' };
+      this.searchParams = { term: '', color: '' };
     }
 
     this.title.setTitle('Person Search | Frontend Candidate');
@@ -91,6 +91,18 @@ export class SearchComponent implements OnInit {
     this.searchTrigger = true;
     this.loader = true;
 
+    const hasTerm = this.searchParams.term?.trim();
+    const hasColor = this.searchParams.color?.trim();
+    this.formValid = !!(hasTerm || hasColor);
+
+    if (!this.formValid) {
+      // Add the visual error state
+      this.addFormErrorClasses();
+      this.loader = false;
+      return;
+    }
+    this.addFormErrorClasses(true);
+
     this.results$ = this.getSearchResults(this.searchParams).pipe(
       map((data) => {
         this.loader = false;
@@ -107,5 +119,22 @@ export class SearchComponent implements OnInit {
         return of([]); // return an empty array to keep template happy
       })
     );
+  }
+
+  private addFormErrorClasses(state = false): void {
+    const termElem = document.getElementById('form_termInput');
+    const colorElem = document.getElementById('form_colorSelect');
+
+    if (!state && termElem) {
+      termElem.classList.add('form-error');
+    } else {
+      termElem?.classList.remove('form-error');
+    }
+
+    if (!state && colorElem) {
+      colorElem.classList.add('form-error');
+    } else {
+      colorElem?.classList.remove('form-error');
+    }
   }
 }
